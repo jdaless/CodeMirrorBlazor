@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+
+  <ItemGroup>
+    <SupportedPlatform Include="browser" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.10" />
+  </ItemGroup>
+	
+	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+		<Exec Command="npm install" WorkingDirectory="$(ProjectDir)wwwroot" />
+		<Exec Command="node_modules/.bin/rollup -c" WorkingDirectory="$(ProjectDir)wwwroot" />
+	</Target>
+	<ItemGroup>
+		<Content Remove="wwwroot\package-lock.json" />
+		<Content Remove="wwwroot\package.json" />
+		<Content Remove="wwwroot\src\**" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="wwwroot\package-lock.json" />
+		<None Include="wwwroot\package.json" />
+		<None Include="wwwroot\src\**" />
+	</ItemGroup>
+</Project>
